@@ -1,95 +1,109 @@
-Django E-Commerce Scraper
-A Django application for scraping product data from e-commerce sites (using brain.com.ua as an example) with Requests, Selenium, and Playwright.
+# 🛒 Django E-Commerce Scraper
 
-Features
-Data Scraping: Collects product data (name, price, code, specifications, photos).
+> **A Django application for scraping and exporting product data from e-commerce websites**  
+> *(Example target: [brain.com.ua](https://brain.com.ua))*
 
-Three Scraping Methods:
+This project demonstrates a flexible scraping system built on **Django**, supporting multiple scraping methods — from simple HTTP parsing to full browser automation — with data storage and export capabilities.
 
-Requests + BeautifulSoup: Fast scraping for static HTML.
+---
 
-Selenium: Scraping dynamic sites with browser-based JavaScript execution.
+## 🚀 Features
 
-Playwright: Asynchronous scraping of dynamic sites.
+- **Data Scraping:**  
+  Collects product information including:
+  - Name  
+  - Price  
+  - Product code  
+  - Specifications  
+  - Image URLs
 
-Data Storage: Uses Django ORM to save data to PostgreSQL.
+- **Three Scraping Methods:**
+  1. **Requests + BeautifulSoup** — Fast static HTML parsing.  
+  2. **Selenium** — Handles dynamic JavaScript-rendered content.  
+  3. **Playwright** — Asynchronous scraping for modern interactive sites.
 
-Data Export: A custom Django command to export data from the database to products_export.csv.
+- **Data Storage:**  
+  Persists results in a PostgreSQL database via Django ORM.
 
-Tech Stack
-Backend: Django
+- **Data Export:**  
+  Custom Django command to export all products to `products_export.csv`.
 
-Database: PostgreSQL (psycopg2-binary)
+---
 
-Scraping:
+## 🧱 Tech Stack
 
-requests
+| Layer | Technology |
+|--------|-------------|
+| **Backend** | Django |
+| **Database** | PostgreSQL (`psycopg2-binary`) |
+| **Scraping** | `requests`, `beautifulsoup4`, `selenium`, `playwright` |
+| **Environment** | Python 3.x, Virtualenv |
+| **Export** | CSV via Django custom commands |
 
-beautifulsoup4
+---
 
-selenium
+## 📁 Project Structure
 
-playwright
+parsing/
+├── config/ # Django project configuration
+│ ├── settings.py
+│ ├── urls.py
+│ └── wsgi.py
+├── parser_app/ # Main scraping application
+│ ├── models.py # Product model (ORM)
+│ ├── tests.py
+│ ├── management/
+│ │ └── commands/ # Custom Django commands
+│ │ ├── save_product.py
+│ │ ├── save_selenium_product.py
+│ │ ├── save_playwright_product.py
+│ │ └── export_csv.py
+│ └── modules/ # Scraping logic
+│ ├── requests_parser.py
+│ ├── selenium_parser.py
+│ └── playwright_parser.py
+├── requirements.txt
+└── manage.py
 
-Structure (Core Components)
-config/: Django project configuration (settings.py, urls.py).
+yaml
+Копіювати код
 
-parser_app/: The main application.
+---
 
-models.py: The Product model for the database.
+## ⚙️ Installation & Setup
 
-management/commands/: Custom commands to run scrapers and export data.
+### **Prerequisites**
+- Python 3.x  
+- PostgreSQL  
+- Git  
 
-modules/: Isolated scraper logic.
+---
 
-requests_parser.py: Scraper using requests + BeautifulSoup.
-
-selenium_parser.py: Scraper using Selenium.
-
-playwright_parser.py: Scraper using Playwright.
-
-Installation and Setup
-Prerequisites
-
-Python 3.x
-
-PostgreSQL
-
-Git
-
-Quick Start
-
-Clone the repository:
-
-Bash
-
+### **1. Clone the Repository**
+```bash
 git clone <REPOSITORY_URL>
 cd parsing
-Create and activate a virtual environment:
-
-Bash
-
+2. Create and Activate a Virtual Environment
+bash
+Копіювати код
 python -m venv venv
-source venv/bin/activate  # (Linux/Mac)
-.\venv\Scripts\activate   # (Windows)
-Install dependencies:
-
-Bash
-
+source venv/bin/activate   # Linux/Mac
+.\venv\Scripts\activate    # Windows
+3. Install Dependencies
+bash
+Копіювати код
 pip install -r requirements.txt
-Install Playwright browsers (for save_playwright_product):
+4. Install Playwright Browsers
+(Required for the Playwright-based scraper.)
 
-Bash
-
+bash
+Копіювати код
 playwright install
-Configure the PostgreSQL database:
+5. Configure Database
+Create a PostgreSQL database (e.g., parser_db) and user, then update config/settings.py:
 
-Create a database (e.g., parser_db) and a user.
-
-Update the DATABASES config in config/settings.py:
-
-Python
-
+python
+Копіювати код
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -100,49 +114,45 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-Apply database migrations:
-
-Bash
-
+6. Apply Migrations
+bash
+Копіювати код
 python manage.py migrate
-Usage (Commands)
-Custom Django commands are used to run the scrapers and export data.
+🧩 Usage
+Custom Django management commands are used to control scraping and export.
 
-Run Scraper (Requests): Parses using requests and BeautifulSoup.
+Command	Description
+python manage.py save_product	Scrapes using Requests + BeautifulSoup
+python manage.py save_selenium_product	Scrapes using Selenium + Chrome
+python manage.py save_playwright_product	Scrapes using Playwright (async)
+python manage.py export_csv	Exports all product data to products_export.csv
 
-Bash
+Example:
 
-python manage.py save_product
-Run Scraper (Selenium): Parses using Selenium and Chrome.
-
-Bash
-
-python manage.py save_selenium_product
-Run Scraper (Playwright): Parses using Playwright (asynchronously).
-
-Bash
-
+bash
+Копіювати код
 python manage.py save_playwright_product
-Export Data to CSV: Saves all data from the Product model to products_export.csv in the project root.
+📊 Example Output
+Example CSV export (products_export.csv):
 
-Bash
+Name	Price	Code	Specs	Image URL
+Lenovo IdeaPad 3	18 999 ₴	81WB001CRA	Ryzen 5 / 16GB / 512GB SSD	https://...
 
-python manage.py export_csv
-Running Tests
-To run tests (currently, the tests.py file is empty):
+🧪 Testing
+To run tests (currently minimal placeholder):
 
-Bash
-
+bash
+Копіювати код
 python manage.py test parser_app
-Troubleshooting
-DB Connection Errors: Check the DATABASES settings in config/settings.py.
+🩺 Troubleshooting
+Issue	Solution
+Database connection error	Check PostgreSQL credentials in config/settings.py.
+No data scraped	Target site structure may have changed — update CSS selectors in modules/*.py.
+Selenium/Playwright errors	Ensure browser drivers are installed (playwright install, chromedriver for Selenium).
 
-Scrapers Find No Data: The target site (brain.com.ua) may have changed its HTML structure. The selectors in the respective modules/*.py files will need to be updated.
+📜 License
+This project is released under the MIT License.
 
-Selenium/Playwright Errors: Ensure the necessary drivers and browsers are installed (playwright install).
-
-License
-This project is distributed under the MIT License.
-
-Contributing
-Contributions are welcome. Please feel free to submit a Pull Request.
+🤝 Contributing
+Contributions are welcome!
+Please open an Issue or submit a Pull Request with improvements or new scraping logic.
