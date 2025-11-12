@@ -81,29 +81,25 @@ yaml
 
 ### **1. Clone the Repository**
 ```bash
-git clone <REPOSITORY_URL>
+git clone <https://github.com/hqrcules/parsing.git>
 cd parsing
 2. Create and Activate a Virtual Environment
 bash
-Копіювати код
 python -m venv venv
 source venv/bin/activate   # Linux/Mac
 .\venv\Scripts\activate    # Windows
 3. Install Dependencies
 bash
-Копіювати код
 pip install -r requirements.txt
 4. Install Playwright Browsers
 (Required for the Playwright-based scraper.)
 
 bash
-Копіювати код
 playwright install
 5. Configure Database
 Create a PostgreSQL database (e.g., parser_db) and user, then update config/settings.py:
 
 python
-Копіювати код
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -116,7 +112,6 @@ DATABASES = {
 }
 6. Apply Migrations
 bash
-Копіювати код
 python manage.py migrate
 🧩 Usage
 Custom Django management commands are used to control scraping and export.
@@ -130,7 +125,6 @@ python manage.py export_csv	Exports all product data to products_export.csv
 Example:
 
 bash
-Копіювати код
 python manage.py save_playwright_product
 📊 Example Output
 Example CSV export (products_export.csv):
@@ -142,7 +136,6 @@ Lenovo IdeaPad 3	18 999 ₴	81WB001CRA	Ryzen 5 / 16GB / 512GB SSD	https://...
 To run tests (currently minimal placeholder):
 
 bash
-Копіювати код
 python manage.py test parser_app
 🩺 Troubleshooting
 Issue	Solution
